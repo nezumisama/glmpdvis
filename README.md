@@ -15,6 +15,7 @@ This is hopefully a full list:
 * GLEW
 * FFTW3
 * MPD
+
 ## Usage
 Put this in your MPD config (usually /etc/mpd.conf):
 
