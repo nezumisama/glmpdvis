@@ -1,3 +1,20 @@
+/*
+    Copyright 2012 by Nezumisama
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include <GL/glew.h>
 #include <GL/glfw.h>
 #include <stdlib.h>
@@ -28,8 +45,6 @@ float data[SAMPLES*BLOCKS];
 fftw_plan fft_plan;
 double fft_in_buff[SAMPLES];
 fftw_complex fft_out_buff[SAMPLES/2+1];
-
-
 point column[] = {
     { 0.5f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.1f, 0.0f },
     { 0.5f, 1.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.1f, 0.0f }
@@ -100,19 +115,18 @@ void err(const char * s) {
     exit(EXIT_FAILURE);
 }
 
-void PointScaleY(point* p, float scale) {
-    p->y *= scale;
+void PointScaleY(point* p, float scale) { 
+    p->y *= scale; 
 }
 
-void PointTranslate(point* p, float x, float y, float z) {
-    p->x += x;
-    p->y += y;
-    p->z += z;
+void PointTranslate(point* p, float x, float y, float z) { 
+    p->x += x; p->y += y; p->z += z;
 }
 
 void GenBuff(void) {
     unsigned ii, i, j, k;
     point* p;
+
     for (i=0; i<BLOCKS; ++i) {
         ii = (i + pos) % BLOCKS;
         for (j=0; j<SAMPLES; ++j) {
@@ -150,8 +164,8 @@ void GenTestData(void) {
 */
 
 void gl_init(void) {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glShadeModel(GL_SMOOTH);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glShadeModel(GL_SMOOTH);
     glGenBuffersARB(1, &vbo);
     glBindBufferARB(GL_ARRAY_BUFFER, vbo);
     glBufferDataARB(GL_ARRAY_BUFFER, sizeof(buff), 0, GL_DYNAMIC_DRAW);
@@ -181,38 +195,39 @@ void gl_init(void) {
 
 void display(void) {
     glBufferSubDataARB(GL_ARRAY_BUFFER, 0, sizeof(buff), buff);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClear(GL_COLOR_BUFFER_BIT);
-	glLoadIdentity();
+    glLoadIdentity();
     glTranslatef(0.0f, 0.0f, -170.0f);
     glRotatef(-20.0f, 0.0f, 1.0f, 0.0f);
     glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
-	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-    
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
     //glRotatef(30.0f, 1.0f, 0.0f, 0.0f);
     //glScalef(0.1f, 0.1f, 0.1f);
     //glDrawArrays(GL_QUADS, 0, SAMPLES*BLOCKS*POINTSPERCOL);
     glDrawArrays(GL_LINES, 0, SAMPLES*BLOCKS*POINTSPERCOL);
-	glfwSwapBuffers();
-	//rot += 1.0f;
+    glfwSwapBuffers();
+    //rot += 1.0f;
 }
 
 void GLFWCALL reshape(int w, int h) {
-	float aspect;
-	aspect = (float) w / (float) h;
-	glViewport (0, 0, w, h); 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	// left right down up far near
-	// glOrtho(-aspect*0.6, aspect*0.6, -0.6, 0.6, -1, 1);
+    float aspect;
+    
+    aspect = (float) w / (float) h;
+    glViewport (0, 0, w, h); 
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    // left right down up far near
+    // glOrtho(-aspect*0.6, aspect*0.6, -0.6, 0.6, -1, 1);
     gluPerspective(60.0f, aspect, 100.0f, 1000.0f);
-	glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 int main(int argc, char **argv) {
     int running = 1, i;
     double scale = 32.0/SAMPLES;
-	if (!glfwInit()) err("Can't initalise glfw");
+    
+    if (!glfwInit()) err("Can't initalise glfw");
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 1);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 4); 
     if (!glfwOpenWindow(512, 512, 0, 0, 0, 0, 0, 0, GLFW_WINDOW)) err("Can't open a window.");
@@ -256,8 +271,8 @@ int main(int argc, char **argv) {
         //dt = glfwGetTime() - dt;
         //printf("Frame processing took %.2f msec.\n", dt*1.0e3f);
     }
+    glDeleteBuffers(1, &vbo);
     glfwTerminate();
     close(fd);
-    glDeleteBuffers(1, &vbo);
     return EXIT_SUCCESS;
 }
