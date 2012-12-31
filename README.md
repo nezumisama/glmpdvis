@@ -14,4 +14,20 @@ This is hopefully a full list:
 * GLFW
 * GLEW
 * FFTW3
+* MPD
+## Usage
+Put this in your MPD config (usually /etc/mpd.conf):
 
+    audio_output {
+            type            "fifo"
+            name            "my_fifo"
+            path            "/tmp/mpd.fifo"
+            format          "44100:16:1"
+    }
+
+Note the path and format has to be this, otherwise it won't work. For now, later it will be configurable of course.
+Now start the program and play some music with MPD.
+Remember to have another output like alsa enabled as well, so that you can hear what's playing.
+## Supported Operating systems
+* GNU/Linux
+* FreeBSD should work too (not tested)
