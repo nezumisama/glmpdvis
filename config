@@ -1,0 +1,64 @@
+# This is the configuration file for glmpdvis.
+# 
+# Lines which first non-whitespace character is '#'
+# are treated as comments.
+# Other lines should have a form: option_name value
+# Everything after the whitespace coming after the option name
+# is considered the value, to the end of the line.
+#
+# Each option has a type. If a type is not specified, 
+# assume it's string. If an option can't be parsed according to rules
+# it's type, it's ignored.
+# The following types are defined:
+#   string -  any string of characters (but note the first character 
+#             has to be a non-whitespace char).
+#   integer - an integer number (the same semantics as %d in printf)
+#   float   - a floating point number.
+#             (the same semantics as %f in printf)
+#   boolean - a boolean value. 
+#             Following strings mean false (all lower case):
+#             false, no
+#             Following strings mean true (all lower case):
+#             true, yes      
+#   color   - a color definition. It can have the from RRGGBB or
+#             RRGGBBAA, where each character is a hexadecimal digit
+#             (a character in the set [0-9a-fA-F]).
+#             A means opacity, with 00 meaning fully transparent and    
+#             ff meaning fully opaque. If alpha is required and is 
+#             omitted, the value ff is used.
+#   enum    - accepts one string from a list of possible. 
+#
+# Each option has a default value, that is used when the option is not
+# specified or can't be used.
+#
+#
+# This value sets the path of the fifo to which MPD saves data.
+# Type: string
+# Default value: /tmp/mpd.fifo
+fifo_path /tmp/mpd.fifo
+# This is the number of samples taken at once to calculate the 
+# spectrum *using FFT). Higher values increase frequency resolution and
+# decrease time resolution.
+# Type: integer
+# Default value: 256
+samples 512
+# This is the length of the spectrogram. The exact time seen is equal 
+# to samples*length/sample_rate seconds (assuming sample_rate is in Hz).
+# Type: integer
+# Default value: 64
+length 80
+# Should the number of frames per second be printed on standard output?
+# Type: boolean
+# Default value: no
+print_fps yes
+# The distance form the 3D object to the camera, the more the further,
+# making it appear smaller. Note this is not the same as zoom, which
+# changes the camera angle.
+# Type: float
+# Default: 100.0
+distance 1.2e2
+# The color of the background. Note currently alpha is ignored, this
+# may be fixed later.
+# Type: color
+# Default: 000000ff
+bg_color ff888888
