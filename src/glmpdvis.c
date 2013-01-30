@@ -109,9 +109,14 @@ point column[] = {
 };
 */
 
+void cleanup() {
+    glDeleteBuffers(1, &vbo);
+    close(fd);
+    glfwTerminate();
+}
+
 void err(const char * s) {
     puts(s);
-    glfwTerminate();
     exit(EXIT_FAILURE);
 }
 
@@ -226,8 +231,8 @@ void GLFWCALL reshape(int w, int h) {
 int main(int argc, char **argv) {
     int running = 1, i;
     double scale = 32.0/SAMPLES;
-    
-    if (!glfwInit()) err("Can't initalise glfw");
+    if (!atexit(cleanup)) err("Can't register atexti callback.");
+    if (!glfwInit()) err("Can't initalise glfw.");
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 1);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 4); 
     if (!glfwOpenWindow(512, 512, 0, 0, 0, 0, 0, 0, GLFW_WINDOW)) err("Can't open a window.");
@@ -271,8 +276,5 @@ int main(int argc, char **argv) {
         //dt = glfwGetTime() - dt;
         //printf("Frame processing took %.2f msec.\n", dt*1.0e3f);
     }
-    glDeleteBuffers(1, &vbo);
-    glfwTerminate();
-    close(fd);
     return EXIT_SUCCESS;
 }

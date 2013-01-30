@@ -5,7 +5,7 @@
 
 /* Errors */
 #define CONFIG_PARSER_CANT_OPEN_FILE 1
-/* Value tyoes */
+/* Value types */
 #define CONFIG_PARSER_STRING 1
 #define CONFIG_PARSER_INT 2
 #define CONFIG_PARSER_FLOAT 3
