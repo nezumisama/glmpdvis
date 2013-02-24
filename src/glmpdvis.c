@@ -231,7 +231,7 @@ void GLFWCALL reshape(int w, int h) {
 int main(int argc, char **argv) {
     int running = 1, i;
     double scale = 32.0/SAMPLES;
-    if (!atexit(cleanup)) err("Can't register atexti callback.");
+    if (atexit(cleanup)) err("Can't register atexti callback.");
     if (!glfwInit()) err("Can't initalise glfw.");
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 1);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 4); 
