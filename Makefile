@@ -3,4 +3,3 @@ all: src/Makefile
 
 .DEFAULT: src/Makefile
 	$(MAKE) -C src $@
-

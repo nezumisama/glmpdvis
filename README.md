@@ -1,4 +1,4 @@
-# GlMPDVis - Music visualization for MPD using OpenGL.
+# GLMPDVis - Music visualization for MPD using OpenGL.
 ## Description
 This program draws a three-dimensional visualization (which currently is a spectrogram) of music played by the Music Player Daemon, using the OpenGL API.
 It is currently at an experimental stage with (almost) no features.

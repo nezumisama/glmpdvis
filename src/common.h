@@ -5,5 +5,4 @@ typedef struct {
     float r, g, b, a;
 } color;
 
-#endif /* COMMON_H */
- 
+#endif // COMMON_H

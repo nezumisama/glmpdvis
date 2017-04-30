@@ -1,9 +1,10 @@
 #include <stdio.h>
+
 #include "config_parser.h"
-#include "config.h"
+#include "configuration.h"
 
 int main(int argc, char ** argv) {
-    config_parser_parse("config", option_list);
+    config_parser_parse(argv[1], option_list);
     config_parser_fill_defaults(option_list);
     printf("***\n");
     printf("fifo_path = %s\n", config.fifo_path);

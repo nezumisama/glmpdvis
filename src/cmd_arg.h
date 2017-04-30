@@ -3,8 +3,8 @@
 
 #include "common.h"
 
-/* Errors */
-#define CMD_ARG_OPTION_REQUIRES_PRAM 1
+// Errors
+#define CMD_ARG_OPTION_REQUIRES_PARAM 1
 
 typedef void (*cmd_arg_callback)(void *data);
 
@@ -18,4 +18,4 @@ int parse_cmd_arg(int argc, char **argv, cmd_arg_config *conf);
 void cmd_arg_default_helpfun(void *data);
 void cmd_arg_default_verfun(void *data);
 
-#endif /* CMD_ARG */
+#endif // CMD_ARG

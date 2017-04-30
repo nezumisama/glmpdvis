@@ -120,11 +120,11 @@ void err(const char * s) {
     exit(EXIT_FAILURE);
 }
 
-void PointScaleY(point* p, float scale) { 
-    p->y *= scale; 
+void PointScaleY(point* p, float scale) {
+    p->y *= scale;
 }
 
-void PointTranslate(point* p, float x, float y, float z) { 
+void PointTranslate(point* p, float x, float y, float z) {
     p->x += x; p->y += y; p->z += z;
 }
 
@@ -137,7 +137,7 @@ void GenBuff(void) {
         for (j=0; j<SAMPLES; ++j) {
             p = &buff[POINTSPERCOL*(i*SAMPLES+j)];
             memcpy(p, column, sizeof(column));
-            for (k=0; k<POINTSPERCOL; ++k) { 
+            for (k=0; k<POINTSPERCOL; ++k) {
                 PointScaleY(p+k, 30.0f*data[ii*SAMPLES+j]);
                 PointTranslate(p+k, ((float) j) - (SAMPLES/2.0f), 0.0f, ((float) i) - (BLOCKS/2.0f));
                 //(p+k)->r = i*1.0f/BLOCKS;
@@ -217,9 +217,9 @@ void display(void) {
 
 void GLFWCALL reshape(int w, int h) {
     float aspect;
-    
+
     aspect = (float) w / (float) h;
-    glViewport (0, 0, w, h); 
+    glViewport (0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     // left right down up far near
@@ -234,7 +234,7 @@ int main(int argc, char **argv) {
     if (atexit(cleanup)) err("Can't register atexti callback.");
     if (!glfwInit()) err("Can't initalise glfw.");
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 1);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 4); 
+    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 4);
     if (!glfwOpenWindow(512, 512, 0, 0, 0, 0, 0, 0, GLFW_WINDOW)) err("Can't open a window.");
     glfwSetWindowTitle("OpenGL music visualizer for MPD");
     glfwSwapInterval(1);
@@ -263,9 +263,9 @@ int main(int argc, char **argv) {
             for (i=0; i<SAMPLES; ++i) fft_in_buff[i] = tmp_buff[i]*3.0517578125e-05;
             // execute the planned fft
             fftw_execute(fft_plan);
-            // put spectrum magnitudes into the data buffer  
+            // put spectrum magnitudes into the data buffer
             for (i=1; i<(SAMPLES/2)+1; ++i) { // skip 0-th since it's the DC part of the spectrum
-                data[pos*SAMPLES+(i-1)*2] = data[pos*SAMPLES+(i-1)*2+1] = (float) (sqrt(fft_out_buff[i][0]*fft_out_buff[i][0] + fft_out_buff[i][1]*fft_out_buff[i][1])*scale); 
+                data[pos*SAMPLES+(i-1)*2] = data[pos*SAMPLES+(i-1)*2+1] = (float) (sqrt(fft_out_buff[i][0]*fft_out_buff[i][0] + fft_out_buff[i][1]*fft_out_buff[i][1])*scale);
             }
             //for (i=0; i<SAMPLES; ++i) data[pos*SAMPLES+i] = tmp_buff[i]*3.0517578125e-04;
         }
