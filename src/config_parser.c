@@ -5,7 +5,8 @@
 
 #include "config_parser.h"
 
-int config_parser_parse_low(const char *filename, option_callback oc, void *oc_data) {
+int config_parser_parse_low(const char *filename, option_callback oc,
+                            void *oc_data) {
     FILE* f;
     char buff[MAX_LINE_LENGTH], opt[MAX_LINE_LENGTH], val[MAX_LINE_LENGTH];
     char *line, *opt_start, *opt_end;
@@ -42,14 +43,16 @@ int config_parser_parse_low(const char *filename, option_callback oc, void *oc_d
     return 0;
 }
 
-int config_parser_parse(const char * filename, config_parser_option * options) {
+int config_parser_parse(const char * filename,
+                        config_parser_option * options) {
     config_parser_options opts;
     int i = 0;
     opts.options = options;
     // find the length of the options list
     while (options[i].type) ++i;
     opts.n = i;
-    return config_parser_parse_low(filename, config_parser_def_option_callback, &opts);
+    return config_parser_parse_low(filename, config_parser_def_option_callback,
+                                   &opts);
 }
 
 void config_parser_def_option_callback(char * name, char * value, void* data) {
@@ -61,7 +64,8 @@ void config_parser_def_option_callback(char * name, char * value, void* data) {
         if (!strcmp(name, opts->options[i].name)) {
             switch (opts->options[i].type) {
                 case CONFIG_PARSER_STRING:
-                    *((char **) opts->options[i].ptr) = malloc(strlen(value) + 1);
+                    *((char **) opts->options[i].ptr) = malloc(strlen(value)
+                                                               + 1);
                     strcpy(*((char **) opts->options[i].ptr), value);
                     opts->options[i].filled = 1;
                     break;
@@ -78,11 +82,13 @@ void config_parser_def_option_callback(char * name, char * value, void* data) {
                     }
                     break;
                 case CONFIG_PARSER_BOOL:
-                    if (!config_parser_bool_parser(value, ((int*) opts->options[i].ptr)))
+                    if (!config_parser_bool_parser(value, ((int*) opts->\
+                                                           options[i].ptr)))
                         opts->options[i].filled = 1;
                     break;
                 case CONFIG_PARSER_COLOR:
-                    if (!config_parser_color_parser(value, ((color*) opts->options[i].ptr)))
+                    if (!config_parser_color_parser(value, ((color*) opts->\
+                                                            options[i].ptr)))
                         opts->options[i].filled = 1;
                     break;
             }

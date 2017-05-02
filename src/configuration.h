@@ -14,8 +14,8 @@ struct {
 } config;
 
 config_parser_option option_list[] = {
-    // name, address of data in config struct, type, default value (as string),
-    // enum list address, was filled (should be 0)
+    // name, address of data in config struct, type, default value
+    // (as string), enum list address, was filled (should be 0)
     {"fifo_path", &config.fifo_path, CONFIG_PARSER_STRING, "/tmp/mpd.fifo", 0,
      0},
     {"samples", &config.samples, CONFIG_PARSER_INT, "512", 0, 0},

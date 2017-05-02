@@ -139,7 +139,8 @@ void GenBuff(void) {
             memcpy(p, column, sizeof(column));
             for (k=0; k<POINTSPERCOL; ++k) {
                 PointScaleY(p+k, 30.0f*data[ii*SAMPLES+j]);
-                PointTranslate(p+k, ((float) j) - (SAMPLES/2.0f), 0.0f, ((float) i) - (BLOCKS/2.0f));
+                PointTranslate(p+k, ((float) j) - (SAMPLES/2.0f), 0.0f,
+                               ((float) i) - (BLOCKS/2.0f));
                 //(p+k)->r = i*1.0f/BLOCKS;
                 //(p+k)->g = 1.0f-(p+k)->r;
                 (p+k)->r = data[ii*SAMPLES+j];
@@ -162,7 +163,8 @@ void GenTestData(void) {
             y = i*4.0f / SAMPLES - 2.0f;
             x = j*4.0f / SAMPLES - 2.0f;
             data[i*SAMPLES+j] = 1.0f*expf(-1.0f*(x*x+y*y));
-            //data[i*SAMPLES+j] = pert+5.0f*(1.2+sinf(y*PI2))*(1.2+sinf(x*PI2));
+            //data[i*SAMPLES+j] = pert+5.0f*(1.2+sinf(y*PI2))*
+            //                    (1.2+sinf(x*PI2));
         }
     }
 }
@@ -235,7 +237,8 @@ int main(int argc, char **argv) {
     if (!glfwInit()) err("Can't initalise glfw.");
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 1);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 4);
-    if (!glfwOpenWindow(512, 512, 0, 0, 0, 0, 0, 0, GLFW_WINDOW)) err("Can't open a window.");
+    if (!glfwOpenWindow(512, 512, 0, 0, 0, 0, 0, 0, GLFW_WINDOW))
+        err("Can't open a window.");
     glfwSetWindowTitle("OpenGL music visualizer for MPD");
     glfwSwapInterval(1);
     glfwSetWindowSizeCallback(reshape);
@@ -245,29 +248,38 @@ int main(int argc, char **argv) {
     gl_init();
     fd = open("/tmp/mpd.fifo", O_RDONLY | O_NONBLOCK);
     printf("Calculating optimal fft algo...\n");
-    fft_plan = fftw_plan_dft_r2c_1d(SAMPLES, fft_in_buff, fft_out_buff, FFTW_MEASURE);
+    fft_plan = fftw_plan_dft_r2c_1d(SAMPLES, fft_in_buff, fft_out_buff,
+                                    FFTW_MEASURE);
     printf("Done.\n");
     while (running) {
-        if (glfwGetKey(GLFW_KEY_ESC) || !glfwGetWindowParam(GLFW_OPENED)) running = 0;
+        if (glfwGetKey(GLFW_KEY_ESC) || !glfwGetWindowParam(GLFW_OPENED))
+            running = 0;
         // read data from the fifo
         if (read(fd, tmp_buff, SAMPLES*2) < 1) {
             // if no data available, just put zeros
             //memset(&data[pos*SAMPLES], 0, SAMPLES*sizeof(float));
-            //memcpy(&data[pos*SAMPLES], &data[((pos-1)%BLOCKS)*SAMPLES], SAMPLES*sizeof(float));
+            //memcpy(&data[pos*SAMPLES], &data[((pos-1)%BLOCKS)*SAMPLES],
+            //       SAMPLES*sizeof(float));
             //for (i=0; i<SAMPLES; ++i) data[pos*SAMPLES+i] = 1.0f;
             //pos = (pos - 1) % BLOCKS;
             ;
         }
         else {
             // convert data to double
-            for (i=0; i<SAMPLES; ++i) fft_in_buff[i] = tmp_buff[i]*3.0517578125e-05;
+            for (i=0; i<SAMPLES; ++i) fft_in_buff[i] =
+                                          tmp_buff[i]*3.0517578125e-05;
             // execute the planned fft
             fftw_execute(fft_plan);
             // put spectrum magnitudes into the data buffer
-            for (i=1; i<(SAMPLES/2)+1; ++i) { // skip 0-th since it's the DC part of the spectrum
-                data[pos*SAMPLES+(i-1)*2] = data[pos*SAMPLES+(i-1)*2+1] = (float) (sqrt(fft_out_buff[i][0]*fft_out_buff[i][0] + fft_out_buff[i][1]*fft_out_buff[i][1])*scale);
+            for (i=1; i<(SAMPLES/2)+1; ++i) {
+                // skip 0-th since it's the DC part of the spectrum
+                data[pos*SAMPLES+(i-1)*2] = data[pos*SAMPLES+(i-1)*2+1] =
+                    (float) (sqrt(fft_out_buff[i][0]*fft_out_buff[i][0] +
+                                  fft_out_buff[i][1]*fft_out_buff[i][1])
+                             *scale);
             }
-            //for (i=0; i<SAMPLES; ++i) data[pos*SAMPLES+i] = tmp_buff[i]*3.0517578125e-04;
+            //for (i=0; i<SAMPLES; ++i) data[pos*SAMPLES+i] =
+            //    tmp_buff[i]*3.0517578125e-04;
         }
         pos = (pos + 1) % BLOCKS;
         GenBuff();
