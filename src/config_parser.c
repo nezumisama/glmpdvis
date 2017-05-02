@@ -61,7 +61,7 @@ void config_parser_def_option_callback(char * name, char * value, void* data) {
         if (!strcmp(name, opts->options[i].name)) {
             switch (opts->options[i].type) {
                 case CONFIG_PARSER_STRING:
-                    *((char **) opts->options[i].ptr) = malloc(strlen(value)+1);
+                    *((char **) opts->options[i].ptr) = malloc(strlen(value) + 1);
                     strcpy(*((char **) opts->options[i].ptr), value);
                     opts->options[i].filled = 1;
                     break;
@@ -139,10 +139,17 @@ void config_parser_fill_defaults(config_parser_option * options) {
 
     while (o->type != 0) {
         if (!o->filled) {
-            printf("Filing in defaults for %s\n", o->name);
             config_parser_def_option_callback((char*) o->name,
                                               (char*) o->default_val, &opts);
         }
         ++o;
     }
+}
+
+int config_parser_load_config(const char* filename,
+                              config_parser_option *options) {
+    int ret = config_parser_parse(filename, options);
+    if (ret) return ret;
+    config_parser_fill_defaults(options);
+    return 0;
 }

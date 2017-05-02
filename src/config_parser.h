@@ -36,8 +36,11 @@ typedef struct {
 
 typedef void (*option_callback)(char *name, char *value, void *data);
 
+int config_parser_load_config(const char* filename,
+                              config_parser_option *options);
 
-int config_parser_parse_low(const char *filename, option_callback oc, void *data);
+int config_parser_parse_low(const char *filename, option_callback oc,
+                            void *data);
 void config_parser_def_option_callback(char *name, char *value, void *data);
 int config_parser_parse(const char *filename, config_parser_option *options);
 int config_parser_bool_parser(char *data, int *out);

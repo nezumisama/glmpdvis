@@ -4,9 +4,7 @@
 #include "configuration.h"
 
 int main(int argc, char ** argv) {
-    config_parser_parse(argv[1], option_list);
-    config_parser_fill_defaults(option_list);
-    printf("***\n");
+    config_parser_load_config(argv[1], option_list);
     printf("fifo_path = %s\n", config.fifo_path);
     printf("samples = %d\n", config.samples);
     printf("length = %d\n", config.length);
